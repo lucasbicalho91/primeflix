@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './filme-info.css';
-import api from '../../services/api'
+import api from '../../services/api';
+import { toast } from 'react-toastify';
 
 function Filme () {
     const { id } = useParams();
@@ -22,7 +23,6 @@ function Filme () {
             setLoading(false);
          })
          .catch(()=>{
-            console.log("FILME NÃO ENCONTRADO");
             navigate("/", { replace: true });
             return;
          })
@@ -32,7 +32,6 @@ function Filme () {
 
 
         return () => {
-            console.log("COMPONENTE FOI DESMONTADO")
         }
     }, [navigate, id])
 
@@ -44,13 +43,13 @@ function Filme () {
         const hasFilme = filmesSalvos.some((filmesSalvo)=> filmesSalvo.id === filme.id)
 
         if (hasFilme) {
-            alert("ESSE FILME JÁ ESTÁ NA LISTA");
+            toast.warning("Esse filme já está na sua lista")
             return;
         }
 
         filmesSalvos.push(filme);
         localStorage.setItem("@primeflix", JSON.stringify(filmesSalvos));
-        alert("FILME SALVO COM SUCESSO")
+        toast.success("Filme salvo com sucesso!")
 
     }
 
